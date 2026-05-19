@@ -941,6 +941,183 @@
     footer { padding: 40px 24px; }
     .cart-panel { width: 100%; }
   }
+
+  /* Product Detail Modal */
+  .prod-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.92);
+    z-index: 2000;
+    display: none;
+    align-items: flex-end;
+    justify-content: center;
+    backdrop-filter: blur(8px);
+  }
+  .prod-modal-overlay.open { display: flex; }
+  .prod-modal {
+    background: var(--deep);
+    border-top: 1px solid var(--border);
+    width: 100%;
+    max-height: 92vh;
+    overflow-y: auto;
+    border-radius: 20px 20px 0 0;
+    animation: slideUp 0.3s ease;
+  }
+  @keyframes slideUp {
+    from { transform: translateY(100%); }
+    to { transform: translateY(0); }
+  }
+  .prod-modal-header {
+    position: sticky;
+    top: 0;
+    background: var(--deep);
+    padding: 16px 20px 12px;
+    display: flex;
+    justify-content: flex-end;
+    border-bottom: 1px solid var(--border);
+    z-index: 10;
+  }
+  .prod-modal-close {
+    background: rgba(255,255,255,0.08);
+    border: none;
+    color: var(--cream);
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .prod-modal-imgs {
+    position: relative;
+    aspect-ratio: 1;
+    overflow: hidden;
+    background: var(--surface);
+  }
+  .prod-modal-slider {
+    display: flex;
+    height: 100%;
+    transition: transform 0.4s ease;
+  }
+  .prod-modal-slider img {
+    min-width: 100%;
+    height: 100%;
+    object-fit: cover;
+    flex-shrink: 0;
+  }
+  .prod-modal-emoji {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 120px;
+  }
+  .prod-modal-dots {
+    position: absolute;
+    bottom: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 6px;
+  }
+  .prod-modal-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.4);
+    transition: background 0.3s;
+    border: none;
+    cursor: pointer;
+  }
+  .prod-modal-dot.active { background: var(--gold); }
+  .modal-slide-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0,0,0,0.5);
+    border: none;
+    color: white;
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    font-size: 18px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 3;
+  }
+  .modal-slide-btn.left { left: 12px; }
+  .modal-slide-btn.right { right: 12px; }
+  .prod-modal-body { padding: 24px 20px 40px; }
+  .prod-modal-cat {
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 8px;
+  }
+  .prod-modal-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 32px;
+    font-weight: 300;
+    color: var(--cream);
+    line-height: 1.1;
+    margin-bottom: 6px;
+  }
+  .prod-modal-origin {
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 20px;
+  }
+  .prod-modal-price {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 40px;
+    color: var(--gold);
+    letter-spacing: 0.05em;
+    margin-bottom: 24px;
+  }
+  .prod-modal-price span {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: var(--muted);
+  }
+  .prod-modal-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .modal-cart-btn {
+    background: var(--gold);
+    border: none;
+    color: var(--black);
+    padding: 16px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.3s;
+    border-radius: 4px;
+  }
+  .modal-cart-btn:hover { background: var(--gold-light); }
+  .modal-order-btn {
+    background: none;
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    padding: 16px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s;
+    border-radius: 4px;
+  }
+  .modal-order-btn:hover { background: var(--gold); color: var(--black); }
 </style>
 </head>
 <body>
@@ -1161,6 +1338,27 @@
   </div>
 </footer>
 
+
+<!-- Product Detail Modal -->
+<div class="prod-modal-overlay" id="prodModalOverlay" onclick="closeProdModal(event)">
+  <div class="prod-modal" id="prodModal">
+    <div class="prod-modal-header">
+      <button class="prod-modal-close" onclick="closeProdModalBtn()">✕</button>
+    </div>
+    <div class="prod-modal-imgs" id="modalImgs"></div>
+    <div class="prod-modal-body">
+      <div class="prod-modal-cat" id="modalCat"></div>
+      <div class="prod-modal-name" id="modalName"></div>
+      <div class="prod-modal-origin" id="modalOrigin"></div>
+      <div class="prod-modal-price" id="modalPrice"></div>
+      <div class="prod-modal-actions">
+        <button class="modal-cart-btn" id="modalCartBtn" onclick="modalAddToCart()">🛒 Savatga</button>
+        <button class="modal-order-btn" onclick="modalOrder()">📞 Buyurtma</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- Cart Panel -->
 <div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
 <div class="cart-panel" id="cartPanel">
@@ -1233,6 +1431,96 @@ function formatPrice(p) {
   return p.toLocaleString('uz-UZ') + ' <span>so\'m</span>';
 }
 
+
+// ===== PRODUCT MODAL =====
+let modalProductId = null;
+let modalSlideIndex = 0;
+let modalImages = [];
+
+function openProdModal(id) {
+  const p = products.find(x => x.id === id);
+  if (!p) return;
+  modalProductId = id;
+  modalSlideIndex = 0;
+  modalImages = p.images && p.images.length > 0 ? p.images : (p.image ? [p.image] : []);
+
+  const catNames = {
+    beans: { uz: 'Kofe donlari', ru: 'Зёрна кофе', en: 'Coffee Beans' },
+    machines: { uz: 'Kofe mashinalari', ru: 'Кофемашины', en: 'Coffee Machines' },
+    accessories: { uz: 'Aksessuarlar', ru: 'Аксессуары', en: 'Accessories' }
+  };
+
+  document.getElementById('modalCat').textContent = catNames[p.cat][currentLang];
+  document.getElementById('modalName').textContent = p.name[currentLang];
+  document.getElementById('modalOrigin').textContent = typeof p.origin === 'object' ? p.origin[currentLang] : (p.origin || '');
+  document.getElementById('modalPrice').innerHTML = p.price.toLocaleString('uz-UZ') + ' <span>so'm</span>';
+
+  // Images
+  const imgContainer = document.getElementById('modalImgs');
+  if (modalImages.length > 0) {
+    imgContainer.innerHTML = `
+      <div class="prod-modal-slider" id="modalSlider">
+        ${modalImages.map(img => `<img src="${img}" alt="">`).join('')}
+      </div>
+      ${modalImages.length > 1 ? `
+        <button class="modal-slide-btn left" onclick="modalSlide(-1)">‹</button>
+        <button class="modal-slide-btn right" onclick="modalSlide(1)">›</button>
+        <div class="prod-modal-dots">
+          ${modalImages.map((_, i) => `<button class="prod-modal-dot ${i===0?'active':''}" onclick="modalGoTo(${i})"></button>`).join('')}
+        </div>
+      ` : ''}
+    `;
+  } else {
+    imgContainer.innerHTML = `<div class="prod-modal-emoji">${p.icon}</div>`;
+  }
+
+  document.getElementById('prodModalOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeProdModal(e) {
+  if (e.target === document.getElementById('prodModalOverlay')) {
+    closeProdModalBtn();
+  }
+}
+
+function closeProdModalBtn() {
+  document.getElementById('prodModalOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function modalSlide(dir) {
+  modalSlideIndex = (modalSlideIndex + dir + modalImages.length) % modalImages.length;
+  document.getElementById('modalSlider').style.transform = `translateX(-${modalSlideIndex * 100}%)`;
+  document.querySelectorAll('.prod-modal-dot').forEach((d, i) => {
+    d.classList.toggle('active', i === modalSlideIndex);
+  });
+}
+
+function modalGoTo(i) {
+  modalSlideIndex = i;
+  document.getElementById('modalSlider').style.transform = `translateX(-${i * 100}%)`;
+  document.querySelectorAll('.prod-modal-dot').forEach((d, idx) => {
+    d.classList.toggle('active', idx === i);
+  });
+}
+
+function modalAddToCart() {
+  if (!modalProductId) return;
+  addToCart(modalProductId);
+  closeProdModalBtn();
+}
+
+function modalOrder() {
+  if (!modalProductId) return;
+  const p = products.find(x => x.id === modalProductId);
+  const text = currentLang === "uz" ? `Salom! "${p.name.uz}" mahsulotini buyurtma qilmoqchiman. Narx: ${p.price.toLocaleString()} som` :
+               currentLang === "ru" ? `Здравствуйте! Хочу заказать "${p.name.ru}". Цена: ${p.price.toLocaleString()} sum` :
+               `Hello! I would like to order "${p.name.en}". Price: ${p.price.toLocaleString()} sum`;
+  window.open(`https://t.me/behzododil1?text=${encodeURIComponent(text)}`, '_blank');
+}
+
+
 // Slider state
 const sliderState = {};
 function slideImg(e, id, dir) {
@@ -1269,7 +1557,7 @@ function renderProducts(filter) {
   };
 
   grid.innerHTML = filtered.map(p => `
-    <div class="product-card" style="animation: fadeUp 0.5s ease forwards; opacity:0; animation-delay:${filtered.indexOf(p)*0.08}s">
+    <div class="product-card" style="animation: fadeUp 0.5s ease forwards; opacity:0; animation-delay:${filtered.indexOf(p)*0.08}s" onclick="openProdModal(${p.id})">
       <div class="product-img" style="position:relative;overflow:hidden;">
         ${p.badge ? `<div class="product-badge">${badgeLabels[p.badge][currentLang]}</div>` : ''}
         ${(() => {
