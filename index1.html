@@ -1,0 +1,1771 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KAFÉ LUXE — Premium Coffee & Equipment</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #0a0804;
+    --deep: #111008;
+    --surface: #1a1510;
+    --card: #1f1a13;
+    --gold: #c9a84c;
+    --gold-light: #e8c96a;
+    --cream: #f5ead8;
+    --warm: #8b6f47;
+    --text: #d4c4a8;
+    --muted: #6b5c45;
+    --border: rgba(201,168,76,0.2);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--cream);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* Custom cursor */
+  .cursor {
+    width: 12px; height: 12px;
+    background: var(--gold);
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+    transition: transform 0.15s ease, opacity 0.15s ease;
+    mix-blend-mode: difference;
+  }
+  .cursor-ring {
+    width: 40px; height: 40px;
+    border: 1px solid var(--gold);
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 9998;
+    transition: all 0.3s ease;
+    opacity: 0.5;
+  }
+
+  /* Noise overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1000;
+    opacity: 0.6;
+  }
+
+  /* Language switcher */
+  .lang-bar {
+    position: fixed;
+    top: 0; right: 0;
+    z-index: 900;
+    display: flex;
+    gap: 0;
+    padding: 12px 24px;
+  }
+  .lang-btn {
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    cursor: pointer;
+    padding: 4px 10px;
+    transition: color 0.3s;
+    border-right: 1px solid var(--border);
+  }
+  .lang-btn:last-child { border-right: none; }
+  .lang-btn.active { color: var(--gold); }
+  .lang-btn:hover { color: var(--cream); }
+
+  /* Navigation */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 800;
+    padding: 20px 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: linear-gradient(to bottom, rgba(10,8,4,0.95), transparent);
+  }
+
+  .logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    letter-spacing: 0.3em;
+    color: var(--gold);
+    text-decoration: none;
+  }
+  .logo span { color: var(--cream); }
+
+  .nav-links {
+    display: flex;
+    gap: 40px;
+    list-style: none;
+  }
+  .nav-links a {
+    color: var(--text);
+    text-decoration: none;
+    font-size: 12px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    transition: color 0.3s;
+  }
+  .nav-links a:hover { color: var(--gold); }
+
+  .cart-btn {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--gold);
+    padding: 10px 24px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  .cart-btn:hover { background: var(--gold); color: var(--black); }
+
+  /* Hero */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    position: relative;
+    padding: 0 60px;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 80% at 70% 50%, rgba(201,168,76,0.08) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 60% at 20% 80%, rgba(139,111,71,0.06) 0%, transparent 60%);
+  }
+
+  .hero-line {
+    position: absolute;
+    right: 35%;
+    top: 0; bottom: 0;
+    width: 1px;
+    background: linear-gradient(to bottom, transparent, var(--border), transparent);
+  }
+
+  .hero-content {
+    max-width: 55%;
+    position: relative;
+    z-index: 2;
+    animation: fadeUp 1.2s ease forwards;
+    opacity: 0;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(40px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .hero-tag {
+    font-size: 11px;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 32px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .hero-tag::before {
+    content: '';
+    width: 40px;
+    height: 1px;
+    background: var(--gold);
+  }
+
+  .hero-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(60px, 8vw, 110px);
+    font-weight: 300;
+    line-height: 0.9;
+    color: var(--cream);
+    margin-bottom: 32px;
+  }
+  .hero-title em {
+    font-style: italic;
+    color: var(--gold);
+  }
+
+  .hero-sub {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.8;
+    max-width: 400px;
+    margin-bottom: 48px;
+    letter-spacing: 0.05em;
+  }
+
+  .hero-cta {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+  }
+
+  .btn-primary {
+    background: var(--gold);
+    color: var(--black);
+    border: none;
+    padding: 16px 40px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.3s;
+    text-decoration: none;
+    display: inline-block;
+  }
+  .btn-primary:hover { background: var(--gold-light); transform: translateY(-2px); }
+
+  .btn-ghost {
+    background: none;
+    color: var(--cream);
+    border: none;
+    padding: 16px 0;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    cursor: pointer;
+    font-weight: 400;
+    transition: color 0.3s;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .btn-ghost::after {
+    content: '→';
+    transition: transform 0.3s;
+  }
+  .btn-ghost:hover { color: var(--gold); }
+  .btn-ghost:hover::after { transform: translateX(6px); }
+
+  .hero-visual {
+    position: absolute;
+    right: 60px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 30%;
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: fadeUp 1.4s 0.2s ease forwards;
+    opacity: 0;
+  }
+
+  .hero-circle {
+    width: 300px; height: 300px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+  .hero-circle::before {
+    content: '';
+    position: absolute;
+    inset: 20px;
+    border-radius: 50%;
+    border: 1px solid rgba(201,168,76,0.1);
+  }
+  .hero-circle-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 80px;
+    color: var(--gold);
+    opacity: 0.15;
+  }
+  .hero-badge {
+    position: absolute;
+    bottom: -20px;
+    right: -20px;
+    background: var(--gold);
+    color: var(--black);
+    width: 90px; height: 90px;
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-align: center;
+    text-transform: uppercase;
+  }
+
+  /* Stats */
+  .stats {
+    padding: 60px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+  .stat {
+    padding: 40px;
+    border-right: 1px solid var(--border);
+    text-align: center;
+  }
+  .stat:last-child { border-right: none; }
+  .stat-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 56px;
+    color: var(--gold);
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+  .stat-label {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  /* Categories */
+  .section {
+    padding: 100px 60px;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: 60px;
+  }
+
+  .section-tag {
+    font-size: 11px;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .section-tag::before {
+    content: '';
+    width: 30px;
+    height: 1px;
+    background: var(--gold);
+  }
+
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(36px, 4vw, 56px);
+    font-weight: 300;
+    color: var(--cream);
+    line-height: 1.1;
+  }
+  .section-title em { font-style: italic; color: var(--gold); }
+
+  /* Category cards */
+  .cat-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+  }
+
+  .cat-card {
+    position: relative;
+    aspect-ratio: 3/4;
+    overflow: hidden;
+    cursor: pointer;
+    background: var(--surface);
+  }
+
+  .cat-card-bg {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.6s ease;
+  }
+
+  .cat-card:hover .cat-card-bg { transform: scale(1.05); }
+
+  .cat-icon {
+    font-size: 120px;
+    opacity: 0.08;
+    filter: grayscale(1);
+  }
+
+  .cat-gradient {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(10,8,4,0.95) 30%, transparent 70%);
+  }
+
+  .cat-content {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    padding: 32px;
+    transform: translateY(20px);
+    transition: transform 0.4s ease;
+  }
+  .cat-card:hover .cat-content { transform: translateY(0); }
+
+  .cat-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 60px;
+    color: var(--gold);
+    opacity: 0.2;
+    line-height: 1;
+  }
+
+  .cat-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px;
+    font-weight: 400;
+    color: var(--cream);
+    margin-bottom: 8px;
+  }
+
+  .cat-count {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+
+  .cat-arrow {
+    position: absolute;
+    top: 32px;
+    right: 32px;
+    width: 40px;
+    height: 40px;
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--gold);
+    font-size: 16px;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .cat-card:hover .cat-arrow { opacity: 1; }
+
+  /* Products */
+  .products-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+  }
+
+  .product-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    overflow: hidden;
+    transition: border-color 0.3s, transform 0.3s;
+    cursor: pointer;
+  }
+  .product-card:hover {
+    border-color: var(--gold);
+    transform: translateY(-4px);
+  }
+
+  .product-img {
+    aspect-ratio: 1;
+    background: var(--surface);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 64px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .product-img::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at center, transparent 40%, rgba(10,8,4,0.5));
+  }
+
+  .product-badge {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    background: var(--gold);
+    color: var(--black);
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    z-index: 2;
+  }
+
+  .product-info {
+    padding: 20px;
+  }
+
+  .product-cat {
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 8px;
+  }
+
+  .product-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
+    color: var(--cream);
+    margin-bottom: 4px;
+    line-height: 1.2;
+  }
+
+  .product-origin {
+    font-size: 11px;
+    color: var(--muted);
+    margin-bottom: 16px;
+    letter-spacing: 0.05em;
+  }
+
+  .product-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .product-price {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 24px;
+    color: var(--gold);
+    letter-spacing: 0.05em;
+  }
+
+  .product-price span {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+  }
+
+  .add-btn {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--gold);
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 18px;
+    transition: all 0.3s;
+  }
+  .add-btn:hover { background: var(--gold); color: var(--black); }
+
+  /* Banner */
+  .banner {
+    margin: 0 60px;
+    padding: 80px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .banner::before {
+    content: 'KAFÉ';
+    position: absolute;
+    right: -20px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 200px;
+    color: var(--gold);
+    opacity: 0.04;
+    white-space: nowrap;
+    pointer-events: none;
+  }
+
+  .banner-text h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 48px;
+    font-weight: 300;
+    line-height: 1.1;
+    margin-bottom: 16px;
+  }
+  .banner-text h2 em { font-style: italic; color: var(--gold); }
+  .banner-text p {
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.8;
+    max-width: 400px;
+  }
+
+  .banner-form {
+    display: flex;
+    gap: 0;
+    min-width: 360px;
+  }
+
+  .banner-input {
+    flex: 1;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--border);
+    border-right: none;
+    color: var(--cream);
+    padding: 16px 20px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    outline: none;
+  }
+  .banner-input::placeholder { color: var(--muted); }
+  .banner-input:focus { border-color: var(--gold); }
+
+  .banner-submit {
+    background: var(--gold);
+    border: none;
+    color: var(--black);
+    padding: 16px 28px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  .banner-submit:hover { background: var(--gold-light); }
+
+  /* Footer */
+  footer {
+    padding: 80px 60px 40px;
+    border-top: 1px solid var(--border);
+    margin-top: 100px;
+  }
+
+  .footer-top {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 60px;
+    margin-bottom: 60px;
+  }
+
+  .footer-brand .logo { font-size: 32px; display: block; margin-bottom: 20px; }
+  .footer-brand p { color: var(--muted); font-size: 13px; line-height: 1.8; }
+
+  .footer-col h4 {
+    font-size: 11px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 24px;
+  }
+
+  .footer-col ul { list-style: none; }
+  .footer-col ul li { margin-bottom: 12px; }
+  .footer-col ul li a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 13px;
+    transition: color 0.3s;
+    cursor: pointer;
+  }
+  .footer-col ul li a:hover { color: var(--cream); }
+
+  .footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 40px;
+    border-top: 1px solid var(--border);
+  }
+
+  .footer-bottom p {
+    color: var(--muted);
+    font-size: 12px;
+    letter-spacing: 0.1em;
+  }
+
+  .social-links {
+    display: flex;
+    gap: 20px;
+  }
+  .social-link {
+    width: 36px;
+    height: 36px;
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--muted);
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-decoration: none;
+  }
+  .social-link:hover { border-color: var(--gold); color: var(--gold); }
+
+  /* Cart overlay */
+  .cart-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.7);
+    z-index: 2000;
+    display: none;
+    backdrop-filter: blur(4px);
+  }
+  .cart-overlay.open { display: block; }
+
+  .cart-panel {
+    position: fixed;
+    top: 0; right: 0; bottom: 0;
+    width: 400px;
+    background: var(--deep);
+    border-left: 1px solid var(--border);
+    z-index: 2001;
+    padding: 40px;
+    transform: translateX(100%);
+    transition: transform 0.4s ease;
+    overflow-y: auto;
+  }
+  .cart-panel.open { transform: translateX(0); }
+
+  .cart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 40px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .cart-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px;
+    font-weight: 300;
+  }
+
+  .cart-close {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--cream);
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 18px;
+    transition: all 0.3s;
+  }
+  .cart-close:hover { border-color: var(--gold); color: var(--gold); }
+
+  .cart-items { margin-bottom: 32px; }
+
+  .cart-item {
+    display: flex;
+    gap: 16px;
+    padding: 20px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .cart-item-icon {
+    width: 64px;
+    height: 64px;
+    background: var(--surface);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    flex-shrink: 0;
+  }
+
+  .cart-item-info { flex: 1; }
+  .cart-item-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    color: var(--cream);
+    margin-bottom: 4px;
+  }
+  .cart-item-price { color: var(--gold); font-size: 14px; }
+
+  .cart-item-qty {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 8px;
+  }
+  .qty-btn {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--cream);
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+  }
+  .qty-btn:hover { border-color: var(--gold); color: var(--gold); }
+  .qty-num { font-size: 14px; color: var(--cream); min-width: 20px; text-align: center; }
+
+  .cart-total {
+    padding: 20px 0;
+    border-top: 1px solid var(--border);
+    margin-bottom: 24px;
+  }
+  .cart-total-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+  }
+  .cart-total-row.final {
+    font-size: 18px;
+    color: var(--gold);
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid var(--border);
+  }
+  .cart-total-label { color: var(--muted); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; }
+  .cart-total-val { color: var(--cream); }
+
+  .checkout-btn {
+    width: 100%;
+    background: var(--gold);
+    border: none;
+    color: var(--black);
+    padding: 18px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  .checkout-btn:hover { background: var(--gold-light); }
+
+  .cart-empty {
+    text-align: center;
+    padding: 60px 0;
+    color: var(--muted);
+  }
+  .cart-empty-icon { font-size: 48px; margin-bottom: 16px; opacity: 0.3; }
+  .cart-empty p { font-size: 14px; letter-spacing: 0.1em; }
+
+  /* Toast */
+  .toast {
+    position: fixed;
+    bottom: 32px;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: var(--gold);
+    color: var(--black);
+    padding: 14px 32px;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    z-index: 3000;
+    transition: transform 0.4s ease;
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+
+  /* Filter tabs */
+  .filter-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 40px;
+    flex-wrap: wrap;
+  }
+  .filter-tab {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    padding: 10px 24px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  .filter-tab.active,
+  .filter-tab:hover { border-color: var(--gold); color: var(--gold); background: rgba(201,168,76,0.05); }
+
+  @media (max-width: 768px) {
+    nav { padding: 16px 24px; }
+    .nav-links { display: none; }
+    .hero { padding: 0 24px; }
+    .hero-content { max-width: 100%; }
+    .hero-visual { display: none; }
+    .stats { grid-template-columns: repeat(2, 1fr); padding: 24px; }
+    .stat { padding: 24px; }
+    .section { padding: 60px 24px; }
+    .cat-grid { grid-template-columns: 1fr; }
+    .products-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    .banner { margin: 0 24px; padding: 40px 24px; flex-direction: column; gap: 32px; }
+    .banner-form { min-width: unset; width: 100%; }
+    .footer-top { grid-template-columns: 1fr; gap: 32px; }
+    footer { padding: 40px 24px; }
+    .cart-panel { width: 100%; }
+  }
+
+  /* Product Detail Modal */
+  .prod-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.92);
+    z-index: 2000;
+    display: none;
+    align-items: flex-end;
+    justify-content: center;
+    backdrop-filter: blur(8px);
+  }
+  .prod-modal-overlay.open { display: flex; }
+  .prod-modal {
+    background: var(--deep);
+    border-top: 1px solid var(--border);
+    width: 100%;
+    max-height: 92vh;
+    overflow-y: auto;
+    border-radius: 20px 20px 0 0;
+    animation: slideUp 0.3s ease;
+  }
+  @keyframes slideUp {
+    from { transform: translateY(100%); }
+    to { transform: translateY(0); }
+  }
+  .prod-modal-header {
+    position: sticky;
+    top: 0;
+    background: var(--deep);
+    padding: 16px 20px 12px;
+    display: flex;
+    justify-content: flex-end;
+    border-bottom: 1px solid var(--border);
+    z-index: 10;
+  }
+  .prod-modal-close {
+    background: rgba(255,255,255,0.08);
+    border: none;
+    color: var(--cream);
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .prod-modal-imgs {
+    position: relative;
+    aspect-ratio: 1;
+    overflow: hidden;
+    background: var(--surface);
+  }
+  .prod-modal-slider {
+    display: flex;
+    height: 100%;
+    transition: transform 0.4s ease;
+  }
+  .prod-modal-slider img {
+    min-width: 100%;
+    height: 100%;
+    object-fit: cover;
+    flex-shrink: 0;
+  }
+  .prod-modal-emoji {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 120px;
+  }
+  .prod-modal-dots {
+    position: absolute;
+    bottom: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 6px;
+  }
+  .prod-modal-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.4);
+    transition: background 0.3s;
+    border: none;
+    cursor: pointer;
+  }
+  .prod-modal-dot.active { background: var(--gold); }
+  .modal-slide-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0,0,0,0.5);
+    border: none;
+    color: white;
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    font-size: 18px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 3;
+  }
+  .modal-slide-btn.left { left: 12px; }
+  .modal-slide-btn.right { right: 12px; }
+  .prod-modal-body { padding: 24px 20px 40px; }
+  .prod-modal-cat {
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 8px;
+  }
+  .prod-modal-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 32px;
+    font-weight: 300;
+    color: var(--cream);
+    line-height: 1.1;
+    margin-bottom: 6px;
+  }
+  .prod-modal-origin {
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 20px;
+  }
+  .prod-modal-price {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 40px;
+    color: var(--gold);
+    letter-spacing: 0.05em;
+    margin-bottom: 24px;
+  }
+  .prod-modal-price span {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: var(--muted);
+  }
+  .prod-modal-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .modal-cart-btn {
+    background: var(--gold);
+    border: none;
+    color: var(--black);
+    padding: 16px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.3s;
+    border-radius: 4px;
+  }
+  .modal-cart-btn:hover { background: var(--gold-light); }
+  .modal-order-btn {
+    background: none;
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    padding: 16px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s;
+    border-radius: 4px;
+  }
+  .modal-order-btn:hover { background: var(--gold); color: var(--black); }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- Language Switcher -->
+<div class="lang-bar">
+  <button class="lang-btn active" onclick="setLang('uz')">UZ</button>
+  <button class="lang-btn" onclick="setLang('ru')">RU</button>
+  <button class="lang-btn" onclick="setLang('en')">EN</button>
+</div>
+
+<!-- Navigation -->
+<nav>
+  <a href="#" class="logo">KAFÉ <span>LUXE</span></a>
+  <ul class="nav-links">
+    <li><a href="#katalog" data-uz="Katalog" data-ru="Каталог" data-en="Catalog">Katalog</a></li>
+    <li><a href="#kategoriya" data-uz="Kategoriya" data-ru="Категории" data-en="Categories">Kategoriya</a></li>
+    <li><a href="#haqida" data-uz="Haqida" data-ru="О нас" data-en="About">Haqida</a></li>
+    <li><a href="#aloqa" data-uz="Aloqa" data-ru="Контакты" data-en="Contact">Aloqa</a></li>
+  </ul>
+  <button class="cart-btn" onclick="openCart()">
+    <span data-uz="Savat" data-ru="Корзина" data-en="Cart">Savat</span>
+    (<span id="cart-count">0</span>)
+  </button>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-line"></div>
+
+  <div class="hero-content">
+    <div class="hero-tag">
+      <span data-uz="Premium Kofe Do'koni" data-ru="Премиум Кофе Магазин" data-en="Premium Coffee Shop">Premium Kofe Do'koni</span>
+    </div>
+    <h1 class="hero-title">
+      <em data-uz="Eng yaxshi" data-ru="Лучший" data-en="The finest">Eng yaxshi</em><br>
+      <span data-uz="kofe va" data-ru="кофе и" data-en="coffee &">kofe va</span><br>
+      <span data-uz="uskunalar" data-ru="оборудование" data-en="equipment">uskunalar</span>
+    </h1>
+    <p class="hero-sub" data-uz="Dunyo bo'ylab eng yaxshi kofe turlarini va professional kafe uskunalarini bir joyda toping. Sizning biznesingiz uchun eng mukammal tanlov." data-ru="Найдите лучшие сорта кофе со всего мира и профессиональное оборудование для кафе в одном месте." data-en="Discover the world's finest coffee varieties and professional café equipment all in one place. The perfect choice for your business.">
+      Dunyo bo'ylab eng yaxshi kofe turlarini va professional kafe uskunalarini bir joyda toping. Sizning biznesingiz uchun eng mukammal tanlov.
+    </p>
+    <div class="hero-cta">
+      <a href="#katalog" class="btn-primary" data-uz="Xarid qilish" data-ru="Купить сейчас" data-en="Shop Now">Xarid qilish</a>
+      <a href="#kategoriya" class="btn-ghost" data-uz="Kategoriyalar" data-ru="Категории" data-en="Categories">Kategoriyalar</a>
+    </div>
+  </div>
+
+  <div class="hero-visual">
+    <div class="hero-circle">
+      <div class="hero-circle-text">☕</div>
+      <div class="hero-badge">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:20px;line-height:1">100+</div>
+        <div data-uz="Mahsulot" data-ru="Товаров" data-en="Products">Mahsulot</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Stats -->
+<div class="stats">
+  <div class="stat">
+    <div class="stat-num">150+</div>
+    <div class="stat-label" data-uz="Kofe turlari" data-ru="Видов кофе" data-en="Coffee varieties">Kofe turlari</div>
+  </div>
+  <div class="stat">
+    <div class="stat-num">50+</div>
+    <div class="stat-label" data-uz="Uskunalar" data-ru="Оборудования" data-en="Equipment">Uskunalar</div>
+  </div>
+  <div class="stat">
+    <div class="stat-num">5K+</div>
+    <div class="stat-label" data-uz="Mijozlar" data-ru="Клиентов" data-en="Customers">Mijozlar</div>
+  </div>
+  <div class="stat">
+    <div class="stat-num">3</div>
+    <div class="stat-label" data-uz="Yillik tajriba" data-ru="Года опыта" data-en="Years experience">Yillik tajriba</div>
+  </div>
+</div>
+
+<!-- Categories -->
+<section class="section" id="kategoriya">
+  <div class="section-header">
+    <div>
+      <div class="section-tag" data-uz="Bo'limlar" data-ru="Разделы" data-en="Sections">Bo'limlar</div>
+      <h2 class="section-title">
+        <span data-uz="Bizning" data-ru="Наши" data-en="Our">Bizning</span>
+        <em data-uz=" kategoriyalar" data-ru=" категории" data-en=" categories"> kategoriyalar</em>
+      </h2>
+    </div>
+  </div>
+
+  <div class="cat-grid">
+    <div class="cat-card" onclick="filterProducts('beans')">
+      <div class="cat-card-bg">
+        <div class="cat-icon">☕</div>
+      </div>
+      <div class="cat-gradient"></div>
+      <div class="cat-arrow">→</div>
+      <div class="cat-content">
+        <div class="cat-num">01</div>
+        <div class="cat-name" data-uz="Kofe donlari" data-ru="Кофейные зёрна" data-en="Coffee Beans">Kofe donlari</div>
+        <div class="cat-count" data-uz="12 mahsulot" data-ru="12 товаров" data-en="12 products">12 mahsulot</div>
+      </div>
+    </div>
+    <div class="cat-card" onclick="filterProducts('machines')">
+      <div class="cat-card-bg">
+        <div class="cat-icon">🔧</div>
+      </div>
+      <div class="cat-gradient"></div>
+      <div class="cat-arrow">→</div>
+      <div class="cat-content">
+        <div class="cat-num">02</div>
+        <div class="cat-name" data-uz="Kofe mashinalari" data-ru="Кофемашины" data-en="Coffee Machines">Kofe mashinalari</div>
+        <div class="cat-count" data-uz="8 mahsulot" data-ru="8 товаров" data-en="8 products">8 mahsulot</div>
+      </div>
+    </div>
+    <div class="cat-card" onclick="filterProducts('accessories')">
+      <div class="cat-card-bg">
+        <div class="cat-icon">🫖</div>
+      </div>
+      <div class="cat-gradient"></div>
+      <div class="cat-arrow">→</div>
+      <div class="cat-content">
+        <div class="cat-num">03</div>
+        <div class="cat-name" data-uz="Aksessuarlar" data-ru="Аксессуары" data-en="Accessories">Aksessuarlar</div>
+        <div class="cat-count" data-uz="20 mahsulot" data-ru="20 товаров" data-en="20 products">20 mahsulot</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Products -->
+<section class="section" id="katalog" style="background: var(--surface); margin: 0;">
+  <div class="section-header">
+    <div>
+      <div class="section-tag" data-uz="Mahsulotlar" data-ru="Товары" data-en="Products">Mahsulotlar</div>
+      <h2 class="section-title">
+        <em data-uz="Tanlangan" data-ru="Избранные" data-en="Featured">Tanlangan</em>
+        <span data-uz=" mahsulotlar" data-ru=" товары" data-en=" products"> mahsulotlar</span>
+      </h2>
+    </div>
+  </div>
+
+  <div class="filter-tabs">
+    <button class="filter-tab active" onclick="filterProducts('all')" data-uz="Hammasi" data-ru="Все" data-en="All">Hammasi</button>
+    <button class="filter-tab" onclick="filterProducts('beans')" data-uz="Kofe donlari" data-ru="Зёрна" data-en="Beans">Kofe donlari</button>
+    <button class="filter-tab" onclick="filterProducts('machines')" data-uz="Mashinalari" data-ru="Машины" data-en="Machines">Mashinalari</button>
+    <button class="filter-tab" onclick="filterProducts('accessories')" data-uz="Aksessuarlar" data-ru="Аксессуары" data-en="Accessories">Aksessuarlar</button>
+  </div>
+
+  <div class="products-grid" id="products-grid">
+    <!-- Products injected by JS -->
+  </div>
+</section>
+
+<!-- Newsletter Banner -->
+<div class="banner" id="haqida">
+  <div class="banner-text">
+    <h2>
+      <em data-uz="Yangiliklar" data-ru="Новости" data-en="Stay">Yangiliklar</em>
+      <span data-uz=" va aksiyalar" data-ru=" и акции" data-en=" updated"> va aksiyalar</span>
+    </h2>
+    <p data-uz="Eng yangi mahsulotlar va maxsus takliflar haqida birinchi bo'lib xabardor bo'ling." data-ru="Будьте первыми, кто узнает о новых товарах и специальных предложениях." data-en="Be the first to know about new products and special offers.">
+      Eng yangi mahsulotlar va maxsus takliflar haqida birinchi bo'lib xabardor bo'ling.
+    </p>
+  </div>
+  <div class="banner-form">
+    <input type="email" class="banner-input" placeholder="email@example.com">
+    <button class="banner-submit" data-uz="Obuna" data-ru="Подписаться" data-en="Subscribe">Obuna</button>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer id="aloqa">
+  <div class="footer-top">
+    <div class="footer-brand">
+      <span class="logo">KAFÉ <span>LUXE</span></span>
+      <p data-uz="Premium kofe va kafe uskunalari. Bizning maqsadimiz — sizga eng yaxshi kofe tajribasini taqdim etish." data-ru="Премиум кофе и оборудование для кафе. Наша цель — предоставить вам лучший кофейный опыт." data-en="Premium coffee and café equipment. Our goal is to provide you with the finest coffee experience.">
+        Premium kofe va kafe uskunalari. Bizning maqsadimiz — sizga eng yaxshi kofe tajribasini taqdim etish.
+      </p>
+    </div>
+    <div class="footer-col">
+      <h4 data-uz="Kategoriyalar" data-ru="Категории" data-en="Categories">Kategoriyalar</h4>
+      <ul>
+        <li><a onclick="filterProducts('beans')" data-uz="Kofe donlari" data-ru="Зёрна кофе" data-en="Coffee Beans">Kofe donlari</a></li>
+        <li><a onclick="filterProducts('machines')" data-uz="Kofe mashinalari" data-ru="Кофемашины" data-en="Coffee Machines">Kofe mashinalari</a></li>
+        <li><a onclick="filterProducts('accessories')" data-uz="Aksessuarlar" data-ru="Аксессуары" data-en="Accessories">Aksessuarlar</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4 data-uz="Ma'lumot" data-ru="Информация" data-en="Information">Ma'lumot</h4>
+      <ul>
+        <li><a data-uz="Biz haqimizda" data-ru="О нас" data-en="About Us">Biz haqimizda</a></li>
+        <li><a data-uz="Yetkazib berish" data-ru="Доставка" data-en="Delivery">Yetkazib berish</a></li>
+        <li><a data-uz="Qaytarish siyosati" data-ru="Политика возврата" data-en="Return Policy">Qaytarish siyosati</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4 data-uz="Aloqa" data-ru="Контакты" data-en="Contact">Aloqa</h4>
+      <ul>
+        <li><a>Instagram: @kafeluxe</a></li>
+        <li><a>Telegram: @kafeluxe</a></li>
+        <li><a>+998 90 123 45 67</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 KAFÉ LUXE. <span data-uz="Barcha huquqlar himoyalangan." data-ru="Все права защищены." data-en="All rights reserved.">Barcha huquqlar himoyalangan.</span></p>
+    <div class="social-links">
+      <a class="social-link" href="#">📸</a>
+      <a class="social-link" href="#">✈️</a>
+      <a class="social-link" href="#">▶️</a>
+    </div>
+  </div>
+</footer>
+
+
+<!-- Product Detail Modal -->
+<div class="prod-modal-overlay" id="prodModalOverlay" onclick="closeProdModal(event)">
+  <div class="prod-modal" id="prodModal">
+    <div class="prod-modal-header">
+      <button class="prod-modal-close" onclick="closeProdModalBtn()">✕</button>
+    </div>
+    <div class="prod-modal-imgs" id="modalImgs"></div>
+    <div class="prod-modal-body">
+      <div class="prod-modal-cat" id="modalCat"></div>
+      <div class="prod-modal-name" id="modalName"></div>
+      <div class="prod-modal-origin" id="modalOrigin"></div>
+      <div class="prod-modal-price" id="modalPrice"></div>
+      <div class="prod-modal-actions">
+        <button class="modal-cart-btn" id="modalCartBtn" onclick="modalAddToCart()">🛒 Savatga</button>
+        <button class="modal-order-btn" onclick="modalOrder()">📞 Buyurtma</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Cart Panel -->
+<div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
+<div class="cart-panel" id="cartPanel">
+  <div class="cart-header">
+    <div class="cart-title" data-uz="Savat" data-ru="Корзина" data-en="Cart">Savat</div>
+    <button class="cart-close" onclick="closeCart()">✕</button>
+  </div>
+  <div class="cart-items" id="cart-items-list"></div>
+  <div id="cart-total-section"></div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+// Language system
+let currentLang = 'uz';
+
+function setLang(lang) {
+  currentLang = lang;
+  document.querySelectorAll('.lang-btn').forEach((btn, i) => {
+    btn.classList.toggle('active', ['uz','ru','en'][i] === lang);
+  });
+  document.querySelectorAll('[data-' + lang + ']').forEach(el => {
+    el.textContent = el.getAttribute('data-' + lang);
+  });
+  document.documentElement.lang = lang;
+  renderProducts(currentFilter);
+  renderCart();
+}
+
+// Products — admin paneldan yuklanadi, bo'lmasa default ishlatiladi
+const defaultProducts = [
+  { id: 1, cat: 'beans', icon: '☕', badge: 'HIT', active: true,
+    name: { uz: 'Etiop Yirgacheffe', ru: 'Эфиопская Yirgacheffe', en: 'Ethiopian Yirgacheffe' },
+    origin: 'Efiopiya | 250g', price: 85000 },
+  { id: 2, cat: 'beans', icon: '🫘', badge: null, active: true,
+    name: { uz: 'Kolumbiya Supremo', ru: 'Колумбийский Supremo', en: 'Colombian Supremo' },
+    origin: 'Kolumbiya | 500g', price: 120000 },
+  { id: 3, cat: 'beans', icon: '☕', badge: 'YANGI', active: true,
+    name: { uz: 'Braziliya Santos', ru: 'Бразильский Santos', en: 'Brazilian Santos' },
+    origin: 'Braziliya | 1kg', price: 200000 },
+  { id: 4, cat: 'machines', icon: '⚙️', badge: 'HIT', active: true,
+    name: { uz: "De'Longhi Dedica", ru: "De'Longhi Dedica", en: "De'Longhi Dedica" },
+    origin: 'Italiya | 15 bar', price: 3500000 },
+  { id: 5, cat: 'machines', icon: '🔧', badge: null, active: true,
+    name: { uz: 'Breville Barista', ru: 'Breville Barista', en: 'Breville Barista' },
+    origin: 'Australia | Pro', price: 8900000 },
+  { id: 6, cat: 'accessories', icon: '🫖', badge: 'YANGI', active: true,
+    name: { uz: 'Hario V60 Set', ru: 'Набор Hario V60', en: 'Hario V60 Set' },
+    origin: 'Yaponiya | Shisha', price: 180000 },
+  { id: 7, cat: 'accessories', icon: '⚖️', badge: null, active: true,
+    name: { uz: 'Acaia Pearl Tarozi', ru: 'Весы Acaia Pearl', en: 'Acaia Pearl Scale' },
+    origin: 'Taiwan | Bluetooth', price: 650000 },
+  { id: 8, cat: 'beans', icon: '🫘', badge: null, active: true,
+    name: { uz: 'Kenia AA Kofe', ru: 'Кения AA Кофе', en: 'Kenya AA Coffee' },
+    origin: 'Keniya | 250g', price: 95000 },
+];
+
+// Admin paneldagi mahsulotlarni o'qish
+let savedProds = null;
+try { savedProds = JSON.parse(localStorage.getItem('kafeluxe_products')); } catch(e) {}
+const products = (savedProds && savedProds.length) ? savedProds.filter(p => p.active !== false) : defaultProducts;
+
+// Cart
+let cart = {};
+let currentFilter = 'all';
+
+function formatPrice(p) {
+  return p.toLocaleString('uz-UZ') + ' <span>so\'m</span>';
+}
+
+
+// ===== PRODUCT MODAL =====
+let modalProductId = null;
+let modalSlideIndex = 0;
+let modalImages = [];
+
+function openProdModal(id) {
+  const p = products.find(x => x.id === id);
+  if (!p) return;
+  modalProductId = id;
+  modalSlideIndex = 0;
+  modalImages = p.images && p.images.length > 0 ? p.images : (p.image ? [p.image] : []);
+
+  const catNames = {
+    beans: { uz: 'Kofe donlari', ru: 'Зёрна кофе', en: 'Coffee Beans' },
+    machines: { uz: 'Kofe mashinalari', ru: 'Кофемашины', en: 'Coffee Machines' },
+    accessories: { uz: 'Aksessuarlar', ru: 'Аксессуары', en: 'Accessories' }
+  };
+
+  document.getElementById('modalCat').textContent = catNames[p.cat][currentLang];
+  document.getElementById('modalName').textContent = p.name[currentLang];
+  document.getElementById('modalOrigin').textContent = typeof p.origin === 'object' ? p.origin[currentLang] : (p.origin || '');
+  document.getElementById('modalPrice').innerHTML = p.price.toLocaleString('uz-UZ') + ' <span>so'm</span>';
+
+  // Images
+  const imgContainer = document.getElementById('modalImgs');
+  if (modalImages.length > 0) {
+    imgContainer.innerHTML = `
+      <div class="prod-modal-slider" id="modalSlider">
+        ${modalImages.map(img => `<img src="${img}" alt="">`).join('')}
+      </div>
+      ${modalImages.length > 1 ? `
+        <button class="modal-slide-btn left" onclick="modalSlide(-1)">‹</button>
+        <button class="modal-slide-btn right" onclick="modalSlide(1)">›</button>
+        <div class="prod-modal-dots">
+          ${modalImages.map((_, i) => `<button class="prod-modal-dot ${i===0?'active':''}" onclick="modalGoTo(${i})"></button>`).join('')}
+        </div>
+      ` : ''}
+    `;
+  } else {
+    imgContainer.innerHTML = `<div class="prod-modal-emoji">${p.icon}</div>`;
+  }
+
+  document.getElementById('prodModalOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeProdModal(e) {
+  if (e.target === document.getElementById('prodModalOverlay')) {
+    closeProdModalBtn();
+  }
+}
+
+function closeProdModalBtn() {
+  document.getElementById('prodModalOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function modalSlide(dir) {
+  modalSlideIndex = (modalSlideIndex + dir + modalImages.length) % modalImages.length;
+  document.getElementById('modalSlider').style.transform = `translateX(-${modalSlideIndex * 100}%)`;
+  document.querySelectorAll('.prod-modal-dot').forEach((d, i) => {
+    d.classList.toggle('active', i === modalSlideIndex);
+  });
+}
+
+function modalGoTo(i) {
+  modalSlideIndex = i;
+  document.getElementById('modalSlider').style.transform = `translateX(-${i * 100}%)`;
+  document.querySelectorAll('.prod-modal-dot').forEach((d, idx) => {
+    d.classList.toggle('active', idx === i);
+  });
+}
+
+function modalAddToCart() {
+  if (!modalProductId) return;
+  addToCart(modalProductId);
+  closeProdModalBtn();
+}
+
+function modalOrder() {
+  if (!modalProductId) return;
+  const p = products.find(x => x.id === modalProductId);
+  const text = currentLang === "uz" ? `Salom! "${p.name.uz}" mahsulotini buyurtma qilmoqchiman. Narx: ${p.price.toLocaleString()} som` :
+               currentLang === "ru" ? `Здравствуйте! Хочу заказать "${p.name.ru}". Цена: ${p.price.toLocaleString()} sum` :
+               `Hello! I would like to order "${p.name.en}". Price: ${p.price.toLocaleString()} sum`;
+  window.open(`https://t.me/behzododil1?text=${encodeURIComponent(text)}`, '_blank');
+}
+
+
+// Slider state
+const sliderState = {};
+function slideImg(e, id, dir) {
+  e.stopPropagation();
+  const p = products.find(x => x.id === id);
+  if (!p || !p.images) return;
+  if (!sliderState[id]) sliderState[id] = 0;
+  sliderState[id] = (sliderState[id] + dir + p.images.length) % p.images.length;
+  const slider = document.querySelector(`.img-slider[data-id='${id}']`);
+  if (slider) slider.style.transform = `translateX(-${sliderState[id] * 100}%)`;
+  document.querySelectorAll(`.slide-dot-${id}`).forEach((dot, i) => {
+    dot.style.background = i === sliderState[id] ? 'var(--gold)' : 'rgba(255,255,255,0.4)';
+  });
+}
+
+function renderProducts(filter) {
+  currentFilter = filter;
+  const grid = document.getElementById('products-grid');
+  const filtered = filter === 'all' ? products : products.filter(p => p.cat === filter);
+
+  // Update filter tabs
+  document.querySelectorAll('.filter-tab').forEach(tab => {
+    const catMap = { 'Hammasi': 'all', 'Все': 'all', 'All': 'all',
+                     'Kofe donlari': 'beans', 'Зёрна': 'beans', 'Beans': 'beans',
+                     'Mashinalari': 'machines', 'Машины': 'machines', 'Machines': 'machines',
+                     'Aksessuarlar': 'accessories', 'Аксессуары': 'accessories', 'Accessories': 'accessories' };
+    const txt = tab.textContent.trim();
+    tab.classList.toggle('active', catMap[txt] === filter);
+  });
+
+  const badgeLabels = {
+    HIT: { uz: 'HIT', ru: 'ХИТ', en: 'HIT' },
+    YANGI: { uz: 'YANGI', ru: 'НОВИНКА', en: 'NEW' }
+  };
+
+  grid.innerHTML = filtered.map(p => `
+    <div class="product-card" style="animation: fadeUp 0.5s ease forwards; opacity:0; animation-delay:${filtered.indexOf(p)*0.08}s" onclick="openProdModal(${p.id})">
+      <div class="product-img" style="position:relative;overflow:hidden;">
+        ${p.badge ? `<div class="product-badge">${badgeLabels[p.badge][currentLang]}</div>` : ''}
+        ${(() => {
+          const imgs = p.images && p.images.length > 0 ? p.images : (p.image ? [p.image] : []);
+          if (imgs.length > 0) {
+            return `
+              <div class="img-slider" data-id="${p.id}" style="display:flex;width:100%;height:100%;transition:transform 0.4s ease;overflow:hidden;">
+                ${imgs.map(img => `<img src="${img}" style="min-width:100%;height:100%;object-fit:cover;flex-shrink:0;">`).join('')}
+              </div>
+              ${imgs.length > 1 ? `
+                <button onclick="slideImg(event,${p.id},-1)" style="position:absolute;left:8px;top:50%;transform:translateY(-50%);background:rgba(0,0,0,0.6);border:none;color:white;width:28px;height:28px;border-radius:50%;cursor:pointer;font-size:16px;z-index:3;display:flex;align-items:center;justify-content:center;">‹</button>
+                <button onclick="slideImg(event,${p.id},1)" style="position:absolute;right:8px;top:50%;transform:translateY(-50%);background:rgba(0,0,0,0.6);border:none;color:white;width:28px;height:28px;border-radius:50%;cursor:pointer;font-size:16px;z-index:3;display:flex;align-items:center;justify-content:center;">›</button>
+                <div style="position:absolute;bottom:8px;left:50%;transform:translateX(-50%);display:flex;gap:4px;z-index:3;">
+                  ${imgs.map((_,i) => `<div class="slide-dot-${p.id}" style="width:6px;height:6px;border-radius:50%;background:${i===0?'var(--gold)':'rgba(255,255,255,0.4)'};transition:background 0.3s;"></div>`).join('')}
+                </div>
+              ` : ''}
+            `;
+          } else {
+            return `<div style="font-size:72px;filter:drop-shadow(0 8px 24px rgba(0,0,0,0.8))">${p.icon}</div>`;
+          }
+        })()}
+      </div>
+      <div class="product-info">
+        <div class="product-cat">${{beans:{uz:'Kofe donlari',ru:'Зёрна кофе',en:'Coffee Beans'},machines:{uz:'Kofe mashinalari',ru:'Кофемашины',en:'Coffee Machines'},accessories:{uz:'Aksessuarlar',ru:'Аксессуары',en:'Accessories'}}[p.cat][currentLang]}</div>
+        <div class="product-name">${p.name[currentLang]}</div>
+        <div class="product-origin">${typeof p.origin === 'object' ? p.origin[currentLang] : p.origin}</div>
+        <div class="product-footer">
+          <div class="product-price">${formatPrice(p.price)}</div>
+          <button class="add-btn" onclick="addToCart(${p.id})">+</button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function filterProducts(cat) {
+  renderProducts(cat);
+  document.getElementById('katalog').scrollIntoView({ behavior: 'smooth' });
+}
+
+function addToCart(id) {
+  const p = products.find(x => x.id === id);
+  if (!cart[id]) cart[id] = { ...p, qty: 0 };
+  cart[id].qty++;
+  updateCartCount();
+  showToast(currentLang === 'uz' ? 'Savatga qo\'shildi!' : currentLang === 'ru' ? 'Добавлено в корзину!' : 'Added to cart!');
+}
+
+function updateCartCount() {
+  const total = Object.values(cart).reduce((s, i) => s + i.qty, 0);
+  document.getElementById('cart-count').textContent = total;
+}
+
+function changeQty(id, delta) {
+  if (!cart[id]) return;
+  cart[id].qty += delta;
+  if (cart[id].qty <= 0) delete cart[id];
+  updateCartCount();
+  renderCart();
+}
+
+function renderCart() {
+  const list = document.getElementById('cart-items-list');
+  const totalSection = document.getElementById('cart-total-section');
+  const items = Object.values(cart);
+
+  if (items.length === 0) {
+    list.innerHTML = `<div class="cart-empty">
+      <div class="cart-empty-icon">☕</div>
+      <p>${currentLang === 'uz' ? 'Savat bo\'sh' : currentLang === 'ru' ? 'Корзина пуста' : 'Cart is empty'}</p>
+    </div>`;
+    totalSection.innerHTML = '';
+    return;
+  }
+
+  list.innerHTML = items.map(item => `
+    <div class="cart-item">
+      <div class="cart-item-icon">${item.icon}</div>
+      <div class="cart-item-info">
+        <div class="cart-item-name">${item.name[currentLang]}</div>
+        <div class="cart-item-price">${item.price.toLocaleString('uz-UZ')} so'm</div>
+        <div class="cart-item-qty">
+          <button class="qty-btn" onclick="changeQty(${item.id},-1)">−</button>
+          <span class="qty-num">${item.qty}</span>
+          <button class="qty-btn" onclick="changeQty(${item.id},1)">+</button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+
+  const subtotal = items.reduce((s, i) => s + i.price * i.qty, 0);
+  const delivery = 30000;
+  const labels = {
+    subtotal: { uz: 'Jami', ru: 'Подытог', en: 'Subtotal' },
+    delivery: { uz: 'Yetkazib berish', ru: 'Доставка', en: 'Delivery' },
+    total: { uz: 'Umumiy', ru: 'Итого', en: 'Total' },
+    checkout: { uz: 'Buyurtma berish', ru: 'Оформить заказ', en: 'Checkout' }
+  };
+
+  totalSection.innerHTML = `
+    <div class="cart-total">
+      <div class="cart-total-row">
+        <span class="cart-total-label">${labels.subtotal[currentLang]}</span>
+        <span class="cart-total-val">${subtotal.toLocaleString('uz-UZ')} so'm</span>
+      </div>
+      <div class="cart-total-row">
+        <span class="cart-total-label">${labels.delivery[currentLang]}</span>
+        <span class="cart-total-val">${delivery.toLocaleString('uz-UZ')} so'm</span>
+      </div>
+      <div class="cart-total-row final">
+        <span>${labels.total[currentLang]}</span>
+        <span>${(subtotal + delivery).toLocaleString('uz-UZ')} so'm</span>
+      </div>
+    </div>
+    <button class="checkout-btn" onclick="checkout()">${labels.checkout[currentLang]}</button>
+  `;
+}
+
+function openCart() {
+  renderCart();
+  document.getElementById('cartOverlay').classList.add('open');
+  document.getElementById('cartPanel').classList.add('open');
+}
+
+function closeCart() {
+  document.getElementById('cartOverlay').classList.remove('open');
+  document.getElementById('cartPanel').classList.remove('open');
+}
+
+async function checkout() {
+  const items = Object.values(cart);
+  if (items.length === 0) return;
+
+  // Collect customer info
+  const name = prompt(currentLang === 'uz' ? 'Ismingiz:' : currentLang === 'ru' ? 'Ваше имя:' : 'Your name:');
+  if (!name) return;
+  const phone = prompt(currentLang === 'uz' ? 'Telefon raqamingiz:' : currentLang === 'ru' ? 'Ваш номер телефона:' : 'Your phone number:');
+  if (!phone) return;
+  const address = prompt(currentLang === 'uz' ? 'Manzilingiz (yoki "Olib ketaman"):' : currentLang === 'ru' ? 'Ваш адрес (или "Самовывоз"):' : 'Your address (or "Pickup"):');
+  if (!address) return;
+
+  const subtotal = items.reduce((s, i) => s + i.price * i.qty, 0);
+  const delivery = 30000;
+  const total = subtotal + delivery;
+
+  const itemLines = items.map(i => `  • ${i.name['uz']} x${i.qty} — ${(i.price * i.qty).toLocaleString()} so'm`).join('\n');
+
+  const text = `🛒 *YANGI BUYURTMA!*\n\n` +
+    `👤 *Ism:* ${name}\n` +
+    `📞 *Telefon:* ${phone}\n` +
+    `📍 *Manzil:* ${address}\n\n` +
+    `📦 *Mahsulotlar:*\n${itemLines}\n\n` +
+    `💰 *Jami:* ${subtotal.toLocaleString()} so'm\n` +
+    `🚚 *Yetkazib berish:* ${delivery.toLocaleString()} so'm\n` +
+    `✅ *Umumiy:* ${total.toLocaleString()} so'm`;
+
+  try {
+    const TOKEN = '8817446809:AAHxQHi6lhgXr_up6Dq_bzJx3qg_8adusdQ';
+    const CHAT_ID = '7416366518';
+    const res = await fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ chat_id: CHAT_ID, text, parse_mode: 'Markdown' })
+    });
+    const data = await res.json();
+    if (data.ok) {
+      const successMsg = currentLang === 'uz' ? '✅ Buyurtmangiz qabul qilindi! Tez orada bog\'lanamiz.' :
+                         currentLang === 'ru' ? '✅ Ваш заказ принят! Мы свяжемся с вами.' :
+                         '✅ Order received! We\'ll contact you soon.';
+      cart = {};
+      updateCartCount();
+      closeCart();
+      showToast(successMsg);
+    } else {
+      throw new Error('Telegram error');
+    }
+  } catch (e) {
+    const errMsg = currentLang === 'uz' ? '❌ Xatolik! Iltimos qayta urining.' :
+                   currentLang === 'ru' ? '❌ Ошибка! Попробуйте снова.' :
+                   '❌ Error! Please try again.';
+    showToast(errMsg);
+  }
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// Cursor
+const cursor = document.getElementById('cursor');
+const cursorRing = document.getElementById('cursorRing');
+document.addEventListener('mousemove', e => {
+  cursor.style.left = e.clientX - 6 + 'px';
+  cursor.style.top = e.clientY - 6 + 'px';
+  setTimeout(() => {
+    cursorRing.style.left = e.clientX - 20 + 'px';
+    cursorRing.style.top = e.clientY - 20 + 'px';
+  }, 60);
+});
+
+document.addEventListener('mousedown', () => cursor.style.transform = 'scale(2)');
+document.addEventListener('mouseup', () => cursor.style.transform = 'scale(1)');
+
+// Init
+renderProducts('all');
+</script>
+</body>
+</html>
